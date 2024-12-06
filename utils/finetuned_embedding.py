@@ -1,4 +1,6 @@
 from transformers import AutoTokenizer, DistilBertForSequenceClassification
+import torch.nn.functional as F
+
 import torch
 
 # Set up device
@@ -46,3 +48,28 @@ def get_pre_classifier_output(text, batch_size=400):
     
     # Concatenate all batch outputs
     return torch.cat(all_outputs, dim=0)
+
+
+def run_second_part_of_model(pre_classified_output):
+    """
+    Executes the second part of the model starting from the pre-classification output.
+
+    Args:
+        pre_classified_output (torch.Tensor): The output from the pre-classification layer (bs, dim).
+        model (DistilBertForSequenceClassification): The fine-tuned model.
+    
+    Returns:
+        torch.Tensor: The logits from the classification layer (bs, num_labels).
+    """
+    # Ensure no gradients are calculated
+    with torch.no_grad():
+        # Apply ReLU activation
+        activated_output = F.relu(pre_classified_output)  # (bs, dim)
+
+        # Apply dropout
+        dropped_output = finetuned_model.dropout(activated_output)  # (bs, dim)
+
+        # Pass through the final classifier layer
+        logits = finetuned_model.classifier(dropped_output)  # (bs, num_labels)
+    
+    return logits
