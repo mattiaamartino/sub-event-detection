@@ -4,7 +4,7 @@ import os
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
-def create_huggingface_dataset(train_data_folder):
+def create_huggingface_training_dataset(train_data_folder):
     train_data = []
     test_data = []
 
@@ -33,7 +33,7 @@ def create_huggingface_dataset(train_data_folder):
     return dataset
 
 
-dataset = create_huggingface_dataset("cleaned_data/train_data")
+dataset = create_huggingface_training_dataset("cleaned_data/train_data")
 
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer, DataCollatorWithPadding
 import evaluate
@@ -84,4 +84,5 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
 )
 
-trainer.train()
+if __name__ == "__main__":
+    trainer.train()
