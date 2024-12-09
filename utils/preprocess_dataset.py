@@ -4,10 +4,13 @@ import pandas as pd
 from collections import Counter
 import datetime 
 from nltk.corpus import stopwords
+import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 import warnings
 
 warnings.filterwarnings("ignore")
+nltk.download('stopwords')
+
 
 def most_common_words(texts, n_words=10):
     all_words = ' '.join(texts)
