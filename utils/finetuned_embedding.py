@@ -47,7 +47,7 @@ def get_pre_classifier_output(text, batch_size=400):
         all_outputs.append(pre_classified_output)
     
     # Concatenate all batch outputs
-    return torch.cat(all_outputs, dim=0)
+    return torch.cat(all_outputs, dim=0).cpu().numpy()
 
 
 def run_second_part_of_model(pre_classified_output):
